@@ -63,8 +63,14 @@ public class ZeroAbstractState {
      */
     public ZeroAbstractState union(ZeroAbstractState another) {
         ZeroAbstractState result = new ZeroAbstractState();
-        // TODO: IMPLEMENT
-        throw new UnsupportedOperationException("Operation is not implemented yet.");
+        result.copy(this);
+        for(String variable : another.getDefinedVariables()){
+            ZeroAbstractValue thisValue = ZeroAbstractValue.BOTTOM;
+            if(this.hasValue(variable))
+                thisValue = this.getValue(variable);
+            result.setValue(variable, thisValue.merge(another.getValue(variable)));
+        }
+        return result;
     }
 
     /**
